@@ -32,4 +32,22 @@ describe("audit engine", () => {
     expect(res.tools.length).toBe(2);
     expect(res.totalCurrentSpend).toBe(79);
   });
+
+  it("returns deep audit object with recommendation category", () => {
+    const res = runAudit([{ tool: "ChatGPT", vendor: "OpenAI", currentPlan: "Enterprise", monthlySpend: 500, seats: 2, apiSpend: 30, useCase: "startup coding" }], {
+      teamSize: 2,
+      primaryUseCase: "startup coding"
+    });
+    expect(res.deepAudit.current_stack_analysis.issue.length).toBeGreaterThan(0);
+    expect(["downgrade", "switch_vendor", "hybrid_stack", "api", "already_optimized"]).toContain(res.deepAudit.recommendation_type);
+  });
+
+  it("does not penalize enterprise when compliance required", () => {
+    const res = runAudit([{ tool: "ChatGPT", vendor: "OpenAI", currentPlan: "Enterprise", monthlySpend: 500, seats: 2, apiSpend: 20, useCase: "startup coding" }], {
+      teamSize: 2,
+      primaryUseCase: "startup coding",
+      complianceRequired: true
+    });
+    expect(res.deepAudit.reasoning.join(" ")).toContain("Compliance flag");
+  });
 });

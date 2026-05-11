@@ -33,7 +33,11 @@ export async function POST(req: Request): Promise<Response> {
     return Response.json({ ...cached, cached: true, rateLimitRemaining: limiter.remaining });
   }
 
-  const result = runAudit(body.tools ?? []);
+  const result = runAudit(body.tools ?? [], {
+    teamSize: typeof body.team_size === "number" ? body.team_size : undefined,
+    primaryUseCase: typeof body.primary_use_case === "string" ? body.primary_use_case : body.useCaseMix,
+    complianceRequired: Boolean(body.compliance_required)
+  });
 
   const publicSlug = toSlug(auditHash);
   const supabase = getSupabaseAdmin();
