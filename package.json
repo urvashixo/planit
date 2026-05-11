@@ -1,0 +1,32 @@
+{
+  "name": "planit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('.next',{recursive:true,force:true}); console.log('cleaned .next')\"",
+    "dev": "next dev",
+    "dev:fresh": "npm run clean && next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.16",
+    "@types/react-dom": "^18.3.5",
+    "@types/node": "^22.15.29",
+    "typescript": "^5.8.3",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "next": "^14.2.30",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@supabase/supabase-js": "^2.49.8",
+    "@upstash/redis": "^1.35.0",
+    "@google/generative-ai": "^0.24.0"
+  }
+}
