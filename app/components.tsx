@@ -6,8 +6,8 @@ export function SiteHeader() {
       <div className="shell topbar-inner">
         <Link href="/" className="logo">Planit</Link>
         <nav className="nav">
-          <Link href="/">How it Works</Link>
-          <Link href="/audit">Pricing</Link>
+          <Link href="/how-it-works">How it Works</Link>
+          <Link href="/pricing">Pricing</Link>
         </nav>
         <Link href="/audit" className="cta">Run Free Audit</Link>
       </div>
