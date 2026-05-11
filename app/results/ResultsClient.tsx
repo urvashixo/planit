@@ -22,6 +22,28 @@ type SharePayload = {
     confidence_score: number;
   };
   tools: ShareTool[];
+  deepAudit: {
+    current_stack_analysis: {
+      waste_level: "low" | "medium" | "high";
+      issue: string;
+    };
+    same_vendor_fix: {
+      recommended_plan: string;
+      monthly_savings: number;
+    };
+    best_vendor_fix: {
+      recommended_vendor: string;
+      recommended_plan: string;
+      monthly_savings: number;
+    };
+    best_hybrid_option: {
+      stack: string[];
+      monthly_savings: number;
+    };
+    reasoning: string[];
+    confidence_score: number;
+    recommendation_type: "downgrade" | "switch_vendor" | "hybrid_stack" | "api" | "already_optimized";
+  };
 };
 
 export default function ResultsClient() {
@@ -122,7 +144,7 @@ export default function ResultsClient() {
             <div className="card" style={{ color: "#13180a", borderColor: "#90ac00", background: "rgba(0,0,0,0.06)" }}>Spend</div>
             <div className="card" style={{ color: "#13180a", borderColor: "#90ac00", background: "rgba(0,0,0,0.06)" }}>Save ${data.audit.monthly_savings.toLocaleString()}/mo</div>
             <div className="card" style={{ color: "#13180a", borderColor: "#90ac00", background: "rgba(0,0,0,0.06)" }}>Annual ${data.audit.annual_savings.toLocaleString()}</div>
-            <div className="card" style={{ color: "#13180a", borderColor: "#90ac00", background: "rgba(0,0,0,0.06)" }}>Score {data.audit.optimization_score}%</div>
+            <div className="card" style={{ color: "#13180a", borderColor: "#90ac00", background: "rgba(0,0,0,0.06)" }}>Confidence {data.deepAudit.confidence_score}%</div>
           </div>
           <div className="wave" />
         </div>
@@ -163,13 +185,35 @@ export default function ResultsClient() {
             <h3 style={{ marginTop: 0, color: "var(--acid)", fontFamily: "IBM Plex Mono, monospace" }}>AI Audit Insight</h3>
             <p style={{ fontSize: 36, margin: "10px 0", fontWeight: 700 }}>{data.audit.optimization_score}% Savings</p>
             <p className="sub" style={{ fontSize: 16 }}>{summary || "Optimization summary is being generated."}</p>
+            <p style={{ margin: "8px 0 0", color: "#d2d6c4", fontFamily: "IBM Plex Mono, monospace", fontSize: 13 }}>
+              Type: {data.deepAudit.recommendation_type.replace("_", " ")}
+            </p>
             <button className="cta" style={{ marginTop: 12 }} onClick={() => setLeadOpen(true)}>Get Full Breakdown</button>
           </div>
         </div>
       </section>
 
+      <section className="shell" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginTop: 20 }}>
+        <article className="card">
+          <h3 style={{ marginTop: 0 }}>Same Vendor Fix</h3>
+          <p style={{ margin: "8px 0", fontWeight: 700 }}>{data.deepAudit.same_vendor_fix.recommended_plan}</p>
+          <p className="sub" style={{ fontSize: 15 }}>Savings: ${data.deepAudit.same_vendor_fix.monthly_savings.toLocaleString()}/mo</p>
+        </article>
+        <article className="card">
+          <h3 style={{ marginTop: 0 }}>Best Vendor Fix</h3>
+          <p style={{ margin: "8px 0", fontWeight: 700 }}>{data.deepAudit.best_vendor_fix.recommended_vendor} - {data.deepAudit.best_vendor_fix.recommended_plan}</p>
+          <p className="sub" style={{ fontSize: 15 }}>Savings: ${data.deepAudit.best_vendor_fix.monthly_savings.toLocaleString()}/mo</p>
+        </article>
+        <article className="card">
+          <h3 style={{ marginTop: 0 }}>Hybrid Option</h3>
+          <p style={{ margin: "8px 0", fontWeight: 700 }}>{data.deepAudit.best_hybrid_option.stack.join(" + ")}</p>
+          <p className="sub" style={{ fontSize: 15 }}>Savings: ${data.deepAudit.best_hybrid_option.monthly_savings.toLocaleString()}/mo</p>
+        </article>
+      </section>
+
       <section className="shell card" style={{ marginTop: 20, marginBottom: 40 }}>
         <h2 style={{ marginTop: 0 }}>Critical Spending Anomalies</h2>
+        <p className="sub" style={{ fontSize: 16, marginTop: 0 }}>{data.deepAudit.current_stack_analysis.issue}</p>
         {data.tools.slice(0, 4).map((tool) => (
           <div key={`${tool.vendor}-${tool.tool_name}-anom`} style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid #23281d", padding: "14px 0" }}>
             <div>{tool.vendor} {tool.tool_name}</div>
