@@ -193,22 +193,25 @@ export default function ResultsClient() {
         </div>
       </section>
 
-      <section className="shell" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginTop: 20 }}>
-        <article className="card">
-          <h3 style={{ marginTop: 0 }}>Same Vendor Fix</h3>
-          <p style={{ margin: "8px 0", fontWeight: 700 }}>{data.deepAudit.same_vendor_fix.recommended_plan}</p>
-          <p className="sub" style={{ fontSize: 15 }}>Savings: ${data.deepAudit.same_vendor_fix.monthly_savings.toLocaleString()}/mo</p>
-        </article>
-        <article className="card">
-          <h3 style={{ marginTop: 0 }}>Best Vendor Fix</h3>
-          <p style={{ margin: "8px 0", fontWeight: 700 }}>{data.deepAudit.best_vendor_fix.recommended_vendor} - {data.deepAudit.best_vendor_fix.recommended_plan}</p>
-          <p className="sub" style={{ fontSize: 15 }}>Savings: ${data.deepAudit.best_vendor_fix.monthly_savings.toLocaleString()}/mo</p>
-        </article>
-        <article className="card">
-          <h3 style={{ marginTop: 0 }}>Hybrid Option</h3>
-          <p style={{ margin: "8px 0", fontWeight: 700 }}>{data.deepAudit.best_hybrid_option.stack.join(" + ")}</p>
-          <p className="sub" style={{ fontSize: 15 }}>Savings: ${data.deepAudit.best_hybrid_option.monthly_savings.toLocaleString()}/mo</p>
-        </article>
+      <section className="shell card" style={{ marginTop: 20 }}>
+        <h2 style={{ marginTop: 0 }}>Optimization Paths</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
+          <article className="card" style={{ background: "#0f1218" }}>
+            <h3 style={{ marginTop: 0 }}>Same Vendor Fix</h3>
+            <p style={{ margin: "8px 0", fontWeight: 700 }}>{data.deepAudit.same_vendor_fix.recommended_plan}</p>
+            <p className="sub" style={{ fontSize: 15 }}>Savings: ${data.deepAudit.same_vendor_fix.monthly_savings.toLocaleString()}/mo</p>
+          </article>
+          <article className="card" style={{ background: "#0f1218" }}>
+            <h3 style={{ marginTop: 0 }}>Best Vendor Fix</h3>
+            <p style={{ margin: "8px 0", fontWeight: 700 }}>{data.deepAudit.best_vendor_fix.recommended_vendor} - {data.deepAudit.best_vendor_fix.recommended_plan}</p>
+            <p className="sub" style={{ fontSize: 15 }}>Savings: ${data.deepAudit.best_vendor_fix.monthly_savings.toLocaleString()}/mo</p>
+          </article>
+          <article className="card" style={{ background: "#0f1218" }}>
+            <h3 style={{ marginTop: 0 }}>Hybrid Option</h3>
+            <p style={{ margin: "8px 0", fontWeight: 700 }}>{data.deepAudit.best_hybrid_option.stack.join(" + ")}</p>
+            <p className="sub" style={{ fontSize: 15 }}>Savings: ${data.deepAudit.best_hybrid_option.monthly_savings.toLocaleString()}/mo</p>
+          </article>
+        </div>
       </section>
 
       <section className="shell card" style={{ marginTop: 20, marginBottom: 40 }}>
