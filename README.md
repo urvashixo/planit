@@ -1,6 +1,6 @@
 # Complete Credex AI Spend Audit Operating System — Planit Product, Docs, Database, Pricing File, Env Architecture, Redis, Supabase, Gemini, Lead Capture, and Growth
 
-Planit is a finance-grade AI spend auditor for startup founders, CTOs, and engineering managers who want to cut AI tooling waste fast. It combines a pricing-backed audit engine, personalized Gemini narrative, and Supabase-native lead capture to create both immediate user value and qualified pipeline for Credex. The current repo is production blueprint + runnable core engine/tests, designed for Product Hunt launch readiness.
+Planit is a founder-grade AI spend audit platform for startup teams that want to reduce AI tooling waste without hurting velocity. It combines deterministic pricing math, use-case intelligence, team-fit logic, and optional Gemini quality reasoning to produce actionable plan/vendor/hybrid recommendations with exact monthly and annual savings. It also acts as a Credex lead-generation engine by capturing high-intent users after value delivery.
 
 ## Screens / Demo
 - Screenshot 1 (Landing): `ss1`
@@ -11,10 +11,50 @@ Planit is a finance-grade AI spend auditor for startup founders, CTOs, and engin
 ## Quick start
 ```bash
 npm install
-npm test
+npm run dev
 ```
 
 For full app wiring (Next.js pages + API routes + Supabase project), set `.env.local` values from `.env.example`, then deploy via Vercel with the same env keys.
+
+## Product purpose
+- Help founders answer: Are we overpaying for AI tools, and what should we change now?
+- Detect overbuy patterns (for example enterprise plans on tiny teams without compliance needs).
+- Recommend same-vendor downgrade, best-vendor alternative, and hybrid stack options.
+- Quantify ROI with deterministic savings math from verified pricing sources.
+- Convert high-savings audits into qualified Credex advisory/credit leads.
+
+## What users input
+- Team context: `team_size`, `primary_use_case`, optional `compliance_required`
+- Per-tool rows: `tool`, `vendor`, `plan`, `monthly_spend`, `seats`, `api_spend`, `use_case`
+- Multi-tool audit supported with dynamic rows on `/audit`
+
+## What Planit outputs
+- Totals: `total_current_spend`, `total_optimized_spend`, `monthly_savings`, `annual_savings`
+- Scoring: `optimization_score`, `confidence_score`
+- Per-tool recommendations with rationale and savings
+- Deep strategy block (`deepAudit`):
+  - `current_stack_analysis`
+  - `same_vendor_fix`
+  - `best_vendor_fix`
+  - `best_hybrid_option`
+  - `recommendation_type`
+  - `reasoning`
+- Founder-readable summary from Gemini (cached, with fallback)
+
+## Decision logic (short)
+1. Use-case intelligence ranks best-fit tools for coding/writing/research/data/mixed.
+2. Plan efficiency layer checks team-size appropriateness, overbuy, and API-vs-seat mix.
+3. Recommendation layer computes same-vendor, competitor, and hybrid paths.
+4. Scoring layer uses weighted formula:
+   - 40% cost efficiency
+   - 35% use-case fit
+   - 15% team-size appropriateness
+   - 10% operational practicality
+5. Results are cached in Redis and persisted in Supabase for share and lead flows.
+
+## Live pages and APIs
+- UI pages: `/`, `/how-it-works`, `/pricing`, `/audit`, `/results?slug=...`
+- API routes: `/api/audit`, `/api/summary`, `/api/leads`, `/api/share/[slug]`
 
 ## Decisions (Trade-offs)
 1. Supabase-only lead persistence first, transactional email deferred: protects reliability without paid email vendor dependency.
