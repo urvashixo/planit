@@ -44,10 +44,10 @@ export default function HowItWorksPage() {
       </section>
 
       <section className="shell card" style={{
-    marginBottom: 20,
+     marginBottom: 20,
     padding: "28px 32px",
     maxWidth: "1200px"
-  }}>
+      }}>
         <h2 style={{ marginTop: 0 }}>Output You See</h2>
         <p className="sub" style={{ fontSize: 18 }}>
           Same-vendor fix, best-vendor fix, hybrid option, monthly/annual savings, confidence score, and recommendation type.
